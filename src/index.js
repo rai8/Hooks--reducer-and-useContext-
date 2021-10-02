@@ -9,3 +9,9 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
+
+/*
+Reducer to manage and manipulate state
+Provide values for entire components
+
+*/
