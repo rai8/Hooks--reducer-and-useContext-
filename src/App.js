@@ -1,36 +1,18 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import './App.css'
-import Counter from './components/Counter'
-import Feed from './components/Feed'
-import Homepage from './components/Homepage'
-import AppState from './context/AppState'
+
+import TodoInput from './components/Todoinput/TodoInput'
+import TodoList from './components/Todolist/TodoList'
+import TodoState from './context/todo/TodoState'
 
 function App() {
   return (
-    <div className='App'>
-      <h1>Context Examples</h1>
-      <Router>
-        <nav>
-          <ul>
-            <li>
-              <Link to='/home'>Home</Link>
-            </li>
-            <li>
-              <Link to='/feed'>Feed</Link>
-            </li>
-            <li>
-              <Link to='/'>Counter</Link>
-            </li>
-          </ul>
-        </nav>
-        <AppState>
-          <Switch>
-            <Route exact path='/' component={Counter} />
-            <Route path='/feed' component={Feed} />
-            <Route path='/home' component={Homepage} />
-          </Switch>
-        </AppState>
-      </Router>
+    <div className='app'>
+      <div className='app__todoApp'>
+        <TodoState>
+          <TodoInput />
+          <TodoList />
+        </TodoState>
+      </div>
     </div>
   )
 }
