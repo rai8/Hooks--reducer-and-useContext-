@@ -1,32 +1,32 @@
 import React from 'react'
 import Answer from './Answer'
 
-const Answers = ({ question, currentAnswer, handleClick }) => {
+const Answers = ({ question, currentAnswer, dispatch }) => {
   return (
     <div>
       <Answer
         letter='a'
         answer={question.answer_a}
         selected={currentAnswer === 'a'}
-        handleClick={handleClick}
+        dispatch={dispatch}
       />
       <Answer
         letter='b'
         answer={question.answer_b}
         selected={currentAnswer === 'b'}
-        handleClick={handleClick}
+        dispatch={dispatch}
       />
       <Answer
         letter='c'
         answer={question.answer_c}
         selected={currentAnswer === 'c'}
-        handleClick={handleClick}
+        dispatch={dispatch}
       />
       <Answer
         letter='d'
         answer={question.answer_d}
         selected={currentAnswer === 'd'}
-        handleClick={handleClick}
+        dispatch={dispatch}
       />
     </div>
   )

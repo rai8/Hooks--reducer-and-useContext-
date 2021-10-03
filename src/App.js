@@ -1,23 +1,32 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import './App.css'
 import Answers from './components/answer/Answers'
 import Progress from './components/progress/Progress'
 import Question from './components/question/Question'
+import {
+  RESET_QUIZ,
+  SET_ANSWERS,
+  SET_CURRENT_ANSWER,
+  SET_CURRENT_QUESTION,
+  SET_ERROR,
+  SET_SHOW_RESULTS,
+} from './context/quiz/quiz-actions'
+import quizReducer from './context/quiz/quizReducer'
 import { questions } from './data'
 
 function App() {
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [currentAnswer, setCurrentAnswer] = useState('')
-  const [answers, setAnswers] = useState([])
-  const [showResults, setShowResults] = useState(false)
-
-  const [error, setError] = useState()
-  const question = questions[currentQuestion]
-
-  const handleClick = e => {
-    setCurrentAnswer(e.target.value)
-    setError('')
+  const initialState = {
+    currentQuestion: 0,
+    currentAnswer: '',
+    answers: [],
+    error: '',
+    showResults: false,
   }
+
+  const [state, dispatch] = useReducer(quizReducer, initialState)
+  const { currentQuestion, currentAnswer, answers, error, showResults } = state
+
+  const question = questions[currentQuestion]
 
   //show result page
   const renderResultMark = (question, answer) => {
@@ -28,6 +37,7 @@ function App() {
   }
   const renderResultData = () => {
     return answers.map(answer => {
+      console.log(answers)
       const question = questions.find(
         question => question.id === answer.questionId
       )
@@ -41,10 +51,7 @@ function App() {
 
   //restart quiz
   const restart = () => {
-    setAnswers([])
-    setCurrentAnswer('')
-    setCurrentQuestion(0)
-    setShowResults(false)
+    dispatch({ type: RESET_QUIZ })
   }
 
   //go to next question
@@ -54,17 +61,34 @@ function App() {
       answer: currentAnswer,
     }
     if (!currentAnswer) {
-      setError('Please select an option')
+      dispatch({
+        type: SET_ERROR,
+        payload: 'Please select an option',
+      })
       return
     }
     answers.push(answer)
-    setAnswers(answers)
-    setCurrentAnswer('')
+    dispatch({
+      type: SET_ANSWERS,
+      payload: answers,
+    })
+
+    dispatch({
+      type: SET_CURRENT_ANSWER,
+      payload: '',
+    })
     if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1)
+      dispatch({
+        type: SET_CURRENT_QUESTION,
+        payload: currentQuestion + 1,
+      })
+
       return
     }
-    setShowResults(true)
+    dispatch({
+      type: SET_SHOW_RESULTS,
+      payload: true,
+    })
   }
   if (showResults) {
     return (
@@ -86,7 +110,7 @@ function App() {
         <Answers
           question={question}
           currentAnswer={currentAnswer}
-          handleClick={handleClick}
+          dispatch={dispatch}
         />
         <button className='btn btn-primary' onClick={next}>
           {' '}
