@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import QuizContext from '../../context/quiz/QuizContext'
 import Answer from './Answer'
 
-const Answers = ({ question, currentAnswer, dispatch }) => {
+const Answers = () => {
+  const { state, dispatch } = useContext(QuizContext)
+  const { currentAnswer, currentQuestion, questions } = state
+  const question = questions[currentQuestion]
   return (
     <div>
       <Answer

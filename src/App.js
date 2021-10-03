@@ -11,11 +11,13 @@ import {
   SET_ERROR,
   SET_SHOW_RESULTS,
 } from './context/quiz/quiz-actions'
+import QuizContext from './context/quiz/QuizContext'
 import quizReducer from './context/quiz/quizReducer'
 import { questions } from './data'
 
 function App() {
   const initialState = {
+    questions: questions,
     currentQuestion: 0,
     currentAnswer: '',
     answers: [],
@@ -103,20 +105,18 @@ function App() {
     )
   } else {
     return (
-      <div className='container'>
-        <Progress current={currentQuestion + 1} total={questions.length} />
-        <Question question={question.question} />
-        {error && <div className='error'>{error}</div>}
-        <Answers
-          question={question}
-          currentAnswer={currentAnswer}
-          dispatch={dispatch}
-        />
-        <button className='btn btn-primary' onClick={next}>
-          {' '}
-          Confirm and Continue
-        </button>
-      </div>
+      <QuizContext.Provider value={{ state, dispatch }}>
+        <div className='container'>
+          <Progress current={currentQuestion + 1} total={questions.length} />
+          <Question question={question.question} />
+          {error && <div className='error'>{error}</div>}
+          <Answers />
+          <button className='btn btn-primary' onClick={next}>
+            {' '}
+            Confirm and Continue
+          </button>
+        </div>
+      </QuizContext.Provider>
     )
   }
 }
