@@ -1,61 +1,34 @@
-import { useReducer, useState } from 'react'
+import React, { useContext } from 'react'
+import { DECREMENT, INCREMENT, RESET } from './actions/counter-actions'
 import './App.css'
-
-//functions used by reducer
-const reducerFunction = (state, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, count: state.count + 1 }
-
-    case 'DECREMENT':
-      return { ...state, count: state.count - 1 }
-    case 'INITIALIZE_COUNT':
-      return { ...state, count: action.payload }
-
-    default:
-      return state
-  }
-}
-
-const initialState = {
-  count: 0,
-}
+import { GlobalContext } from './context/GlobalState'
 
 function App() {
-  const [input, setInput] = useState(0)
-
-  //using useReducer
-  const [state, dispatch] = useReducer(reducerFunction, initialState)
+  const { state, dispatch } = useContext(GlobalContext)
+  console.log(state.count.begin)
   return (
     <div className='App'>
       <p>GLOBAL STATE</p>
-      <div>
-        <label>Start Count</label>
-        <input
-          type='number'
-          value={input}
-          onChange={(e) => setInput(parseInt(e.target.value))}
-        />
 
-        <button
-          onClick={() => dispatch({ type: 'INITIALIZE_COUNT', payload: input })}
-        >
-          Initialize Count
-        </button>
-      </div>
       <div style={{ display: 'flex' }}>
         <button
           style={{ marginRight: '10px' }}
-          onClick={() => dispatch({ type: 'DECREMENT' })}
+          onClick={() => dispatch({ type: DECREMENT })}
         >
           Decrement
         </button>
-        <p>{state.count}</p>
+        <p>{state.count.begin}</p>
         <button
           style={{ marginLeft: '10px' }}
-          onClick={() => dispatch({ type: 'INCREMENT' })}
+          onClick={() => dispatch({ type: INCREMENT })}
         >
           Increment
+        </button>
+        <button
+          style={{ marginLeft: '10px' }}
+          onClick={() => dispatch({ type: RESET })}
+        >
+          RESET
         </button>
       </div>
     </div>
